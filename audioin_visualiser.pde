@@ -7,7 +7,7 @@ ParticleSystem ps;
 
 float randomModifier;
 float accelerationZ;
-float INITIAL_Z_POSITION = 695;
+float INITIAL_Z_POSITION = 200;
 float size;
 
 float volume;
@@ -35,10 +35,10 @@ void setup() {
 
 void draw() {
   volume = analyzer.analyze();
-  accelerationZ = 0.005 + volume;
-  ps.origin.z = INITIAL_Z_POSITION - (volume*1000);
-  randomModifier = 0.01 + (volume*5);
-  size = 8 + volume*100;
+  accelerationZ = 0.002 + volume*.5;
+  ps.origin.z = INITIAL_Z_POSITION - (volume*2000);
+  randomModifier = 0.002 + (volume*5);
+  size = 6 + volume*150;
   
   background(255);
   ps.addParticle();
@@ -92,7 +92,7 @@ class Particle {
   void update() {
     velocity.add(acceleration);
     location.add(velocity);
-    lifespan += 0.5;
+    lifespan += 0.3;
   }
 
   // Method to display
@@ -101,14 +101,14 @@ class Particle {
     fill(0,lifespan);
     pushMatrix();
     translate(location.x, location.y, location.z);
-    sphereDetail(5);
+    sphereDetail(8);
     sphere(size);
     popMatrix();
   }
   
   // Is the particle still useful?
   boolean isDead() {
-    if (lifespan > 255.0) {
+    if (lifespan > 255.0 || location.z > 900) {
       return true;
     } else {
       return false;
